@@ -1,0 +1,9 @@
+{
+  "port": 18000,
+  "list": [
+    {
+      "key": "sample",
+      "target": "http://sample-site.com"
+    }
+  ]
+}
