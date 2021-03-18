@@ -7,7 +7,7 @@
     "start": "nodemon ."
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.0",
     "cors": "^2.8.5",

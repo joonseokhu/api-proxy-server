@@ -19,16 +19,23 @@
 ## 프록시 추가
 
 `proxy.config.js` 의 `list` 배열에 프록시할 설정을 객체로 넣으세요.
-여러개의 api 서버를 동시에 프록시 할 수 있으며, 이때 `key`는 각각 구분되어야 합니다.
+list 배열의 요소들은 다음과 같은 구조의 객체여야 합니다.
 
-### Best Practice
+| key    | type   | format                          | description                   |
+|--------|--------|---------------------------------|-------------------------------|
+| key    | string | 알파벳, 숫자, 하이픈, 밑줄 조합        | 다른 요소와 구분가능한 유니크한 문자열 |
+| target | string | url (protocol + host)       | 프록시 대상 서버의 URL            |
+
+여러개의 api 서버를 동시에 프록시 할 수 있으며, 이때 `key`는 반드시 각각 구분되어야 합니다.
+
+## Best Practice
 
 프론트엔드 프로젝트에서 api 요청 주소는 하드코딩 하는것보다, 개발환경/프로덕션환경 별 기본 url을 맞출 수 있는 wrapper를 만들어서 쓰는게 제일 좋습니다.
 
 예를 들어,
 - create-react-app 으로 만들어진 프로젝트이고
 - httpRequest 를 `axios` 를 통해서 하며
-- `http://foo.com/api`, `https://api.bar.com`, `http://foobar.com/api` 세개의 api를 프록시 해야 한다면
+- `http://foo.com/api`, `https://api.bar.com`, `http://foobar.com:8000/api` 세 개의 api를 프록시 해야 한다면
 
 1. 프록시서버의 `proxy.config.json` 는 이렇게 작성합니다.
 
@@ -46,7 +53,7 @@
     },
     {
       "key": "foobar",
-      "target": "http://foobar.com"
+      "target": "http://foobar.com:8000"
     },
   ]
 }
@@ -69,7 +76,7 @@ export const barApi = axios.create({
 })
 
 export const foobarApi = axios.create({
-  baseURL: isDev ? 'http://127.0.0.1:18000/foobar' : 'http://foobar.com'
+  baseURL: isDev ? 'http://127.0.0.1:18000/foobar' : 'http://foobar.com:8000'
 })
 ```
 
@@ -82,3 +89,8 @@ import { fooApi, barApi } from './src/utils/api'
 // 개발환경이 아닐땐, http://foo.com/api/my-url/1234 로 요청이 갑니다.
 fooApi.get('/api/my-url/1234')
 ```
+
+## 기타 정보
+
+- 버그 발견, 제보, 수정요청은 github issue 통해서 부탁드립니다.
+- Lisence: MIT
